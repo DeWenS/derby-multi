@@ -1,0 +1,24 @@
+index:
+    h1 Hello {{#root._page.user.name}}
+
+    p Home
+    form(method='post', action='/create_game')
+        p Type name of the game
+        input(type='text', name='name')
+        button Create new game
+
+    p Players name
+    form(on-submit='setUsername()')
+        input(type='text', name='name', value='{{#root._page.username}}')
+        button Save
+
+    if #root._page.user.name
+        p Hello, {{#root._page.user.name}}
+
+    p Games:
+    input(on-click='deleteGames()', type='submit', value="Delete all games")
+    br
+    each #root._page.games as #game
+        a(href='/game/{{#game.id}}') {{#game.name}}
+            //input(on-click='deleteGame')
+            br
