@@ -27,6 +27,7 @@ index:
             each #root._page.result as #resultLine
                 tr
                     each #resultLine as #resultTd
+                       td {{#resultTd}}
 
     p Players in game
     each #root._page.game.userIds as #userId
