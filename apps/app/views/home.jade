@@ -1,5 +1,11 @@
 index:
-    h1 Hello {{#root._page.user.name}}
+    h1 Hello&nbsp;
+        if #root._page.user.prof
+            | Professor&nbsp;
+        | {{#root._page.user.name}}
+    label
+        input(type='checkbox', checked='{{#root._page.user.prof}}')
+        | Professor
 
     p Home
     form(method='post', action='/create_game')
@@ -20,5 +26,10 @@ index:
     br
     each #root._page.games as #game
         a(href='/game/{{#game.id}}') {{#game.name}}
-            //input(on-click='deleteGame')
+            if #game.userIds.length >= 3
+                | (locked)
+            each #game.userIds as #uId
+                if #root._page.user.id == #uId
+                    | (participant)
+                br
             br

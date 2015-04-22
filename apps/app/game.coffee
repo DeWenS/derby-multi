@@ -89,12 +89,17 @@ app.get '/game/:gameId', (page, model, params) ->
       model.ref '_page.currentRound', 'games.' + params.gameId + '.currentRound'
       model.ref '_page.player', 'games.' + params.gameId + '.players.' + userId
 
-      unless model.get '_page.player'
+
+      if (game.userIds.length >= 3) && (!userId in game.userIds)
+        alert 'hete'
+#        page.redirect '/'
+
+      if (!model.get '_page.player') && (game.userIds.length < 3)
         model.add '_page.players', {'id': userId}
         model.push '_page.game.userIds', userId
         players = model.get '_page.game.userIds'
         if players.length >=3
           model.set '_page.game.ready', true
-      page.render 'game'
+  page.render 'game'
 
 
