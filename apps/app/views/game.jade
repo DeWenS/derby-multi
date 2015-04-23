@@ -1,33 +1,46 @@
 index:
     a(href='/') Home
-    p Welcome to game "{{#root._page.game.name}}"
+    h1 Welcome to game "{{#root._page.game.name}}"
+    if #root._page.user.prof
+        h2 Professor view
+        if #root._page.game.started
+            if !#root._page.game.finished
+                p STARTED!
+                p round {{#root._page.game.currentRound}}
 
-
-    if #root._page.game.ready && !#root._page.game.started
-        form(on-submit="startGame()")
-            button start
-
-    if #root._page.game.started
-        if !#root._page.game.finished
-            p STARTED!
-            p round {{#root._page.game.currentRound}}
-
-
-            if !#root._page.game.rounds[#root._page.game.currentRound][#root._session.userId]
-                form(on-submit="setAnswer()")
-                    input(type="number", value="{{#root._page.answer}}")
-                    br
-                    button Save
-            else
-                p Your answer: {{#root._page.game.rounds[#root._page.game.currentRound][#root._session.userId]}}
-        else
-            p FINISHED!
-            p Results:
+        p Results:
             for key of #root._page.result
-            each #root._page.result as #resultLine
-                tr
-                    each #resultLine as #resultTd
-                       td {{#resultTd}}
+                each #root._page.result as #resultLine
+                    tr
+                        each #resultLine as #resultTd
+                            td {{#resultTd}}
+
+    else
+        if #root._page.game.ready && !#root._page.game.started
+            form(on-submit="startGame()")
+                button start
+
+        if #root._page.game.started
+            if !#root._page.game.finished
+                p STARTED!
+                p round {{#root._page.game.currentRound}}
+
+
+                if !#root._page.game.rounds[#root._page.game.currentRound][#root._session.userId]
+                    form(on-submit="setAnswer()")
+                        input(type="number", value="{{#root._page.answer}}")
+                        br
+                        button Save
+                else
+                    p Your answer: {{#root._page.game.rounds[#root._page.game.currentRound][#root._session.userId]}}
+            else
+                p FINISHED!
+                p Results:
+                for key of #root._page.result
+                each #root._page.result as #resultLine
+                    tr
+                        each #resultLine as #resultTd
+                           td {{#resultTd}}
 
     p Players in game
     each #root._page.game.userIds as #userId

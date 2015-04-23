@@ -25,11 +25,11 @@ index:
     input(on-click='deleteGames()', type='submit', value="Delete all games")
     br
     each #root._page.games as #game
-        a(href='/game/{{#game.id}}') {{#game.name}}
-            if #game.userIds.length >= 3
+        if #root._page.locked[#game.id]
+            a(href='#') {{#game.name}}
                 | (locked)
-            each #game.userIds as #uId
-                if #root._page.user.id == #uId
-                    | (participant)
-                br
-            br
+        else
+            a(href='/game/{{#game.id}}') {{#game.name}}
+                if #root._page.participant[#game.id]
+                    | &sp;(participant)
+        br

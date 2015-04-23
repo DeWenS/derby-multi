@@ -67,6 +67,21 @@ app.get '/', (page, model, params) ->
   model.subscribe 'games', user, ->
     model.ref('_page.user', user)
     model.at('games').filter().ref('_page.games')
+    games = model.get '_page.games'
+    participant = {}
+    locked = {}
+    userObj = model.get '_page.user'
+    unless userObj
+      model.fetch user , ->
+        user.set {'name': ''}
+    userObj = model.get '_page.user'
+#    console.log(userObj)
+    for game in games
+      participant[game.id] = (userId in game.userIds)
+      locked[game.id] = (game.userIds.length >= 3) && !participant[game.id] && (!userObj || !userObj.prof)
+    model.set '_page.participant', participant
+    model.set '_page.locked', locked
+
     page.render 'home'
 
 app.post '/create_game', (page, model, params) ->
